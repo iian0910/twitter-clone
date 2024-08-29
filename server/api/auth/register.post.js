@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     email,
     password,
     name,
-    profileImage: 'https://picsum.photo/200/200'
+    profileImage: 'https://picsum.photos/200/200'
   }
 
   // 將註冊資訊帶入並建立
