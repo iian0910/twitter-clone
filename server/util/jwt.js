@@ -7,8 +7,28 @@ const generateAccessToken = (user) => {
 }
 const generateRefreshToken = (user) => {
   const config = useRuntimeConfig()
-
+  // 使用 jwt.sign() 來產生 token
   return jwt.sign({ userId: user.id }, config.jwtRefreshSecret, { expiresIn: '4h' })
+}
+
+export const decodeRefreshToken = (token) => {
+  const config = useRuntimeConfig()
+
+  try {
+    return jwt.verify(token, config.jwtRefreshSecret)
+  } catch (error) {
+    return null
+  }
+}
+
+export const decodeAccessToken = (token) => {
+  const config = useRuntimeConfig()
+
+  try {
+    return jwt.verify(token, config.jwtAccessSecret)
+  } catch (error) {
+    return null
+  }
 }
 
 export const generateToken = (user) => {
