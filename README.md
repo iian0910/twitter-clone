@@ -13,6 +13,8 @@ Nuxt3 搭配了 Nitro 讓開發者可以輕鬆在專案內建立 Server API
 |---- auth/
 |------ register.post.js  # 註冊
 |------ login.post.js     # 登入
+|------ refresh.get.js    # refreshToken
+|------ user.get.js       # 取得使用者資訊
 ```
 
 ### 資料庫操作
@@ -28,20 +30,37 @@ Nuxt3 搭配了 Nitro 讓開發者可以輕鬆在專案內建立 Server API
 ```bash
 ┌ server/
 |-- transformers/
-|---- user.js # 存到資料庫的值跟顯示給 User 的值需要經過轉換
+|---- user.js           # 存到資料庫的值跟顯示給 User 的值需要經過轉換
 ```
 
 ### 共用操作
 ```bash
 ┌ server/
 |-- util/
-|---- jwt.js # 依使用者登入資訊生產 token
+|---- jwt.js            # 依使用者登入資訊生產 token
+```
+
+### 中繼站 Middleware
+```bash
+┌ server/
+|-- middleware/
+|---- auth.js            # API 端點驗證
+```
+
+### 組合函數(共用封裝狀態邏輯)
+```bash
+┌ composables/
+|-- useAuth.js            # 使用者登入狀態
+|-- useFetchApi.js        # 管理 API 使用
+|-- useTailwindConfig.js  # 管理 Tailwind 使用
 ```
 
 ### 套件使用
 - prisma
 - bcrypt
 - jsonwebtoken
+- url-pattern
+- jwt-decode
 
 ### 工具介紹 - prisma
 Prisma是一套資料庫工具，提供好上手的資料庫串接功能，本專案串接的資料庫為 mongoDB
@@ -137,4 +156,24 @@ jwt.sign(                       # 使用 jwt.sign() 產生 token
   config.jwtAccessSecret,       # secretOrPrivateKey  : 私鑰可以是字串、buffer 或物件
   { expiresIn: '10m' }          # [options, callback] : 為一個物件
 )
+```
+
+### 工具介紹 - url-pattern
+用於匹配 URL 模式，讓程式碼能精確地判斷請求的 URL 是否符合預期的格式
+
+```bash
+npm install url-pattern                   # 安裝 url-pattern 套件
+
+import UrlPattern from "url-pattern"      # 在檔案內引入
+const patten = new UrlPattern(endpoint)   # 檢查請求的 URL 是否與 endpoints 中的任一模式匹配
+```
+
+### 工具介紹 - jwt-decode
+將加密過的的 Token 解析
+
+```bash
+npm install jwt-decode                      # 安裝 jwt-decode 套件
+
+import { jwtDecode } from "jwt-decode"      # 在檔案內引入
+const jwt = jwtDecode(access_token)         # 將加密的 Token 解析
 ```
