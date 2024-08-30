@@ -61,6 +61,8 @@ Nuxt3 搭配了 Nitro 讓開發者可以輕鬆在專案內建立 Server API
 - jsonwebtoken
 - url-pattern
 - jwt-decode
+- formidable
+- cloudinary
 
 ### 工具介紹 - prisma
 Prisma是一套資料庫工具，提供好上手的資料庫串接功能，本專案串接的資料庫為 mongoDB
@@ -176,4 +178,52 @@ npm install jwt-decode                      # 安裝 jwt-decode 套件
 
 import { jwtDecode } from "jwt-decode"      # 在檔案內引入
 const jwt = jwtDecode(access_token)         # 將加密的 Token 解析
+```
+
+### 工具介紹 - formidable
+用於解析表單資料（尤其是檔案上傳）的 Node.js 模組。
+```bash
+npm install formidable                      # 安裝 formidable 套件
+
+import formidable from "formidable"         # 在檔案內引入
+const from = formidable({})                 # 預設空物件
+
+const response = await new Promise((resolve, reject) => {
+  from.parse(event.node.req, (err, fields, files) => {
+    if (err) {
+      reject(err)
+    }
+
+    resolve({ fields, files })
+  })
+})
+
+```
+
+### 工具介紹 - cloudinary
+雲端圖庫，可上傳圖片並產生相對應連結
+```bash
+npm install cloudinary                          # 安裝 cloudinary 套件
+
+import { v2 as _cloudinary } from "cloudinary"  # 在檔案中引入
+
+const cloudinary = () => {                      # 設定 config (寫在env內)
+  const config = useRuntimeConfig()
+
+  _cloudinary.config({
+    cloud_name: config.cloudinaryCloudName,
+    api_key: config.cloudinaryApiKey,
+    api_secret: config.cloudinaryApiSecret
+  })
+
+  return _cloudinary
+}
+
+export const uploadToCloudinary = (image) => {   # 上傳圖片
+  return new Promise((resolve, reject) => {
+    cloudinary().uploader.upload(image, (error, data) => {
+      ...
+    })   
+  })
+}
 ```
