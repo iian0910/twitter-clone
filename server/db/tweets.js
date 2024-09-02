@@ -5,3 +5,27 @@ export const createTweet = (tweetData) => {
     data: tweetData
   })
 }
+
+export const getTweets = (params = {}) => {
+  return prisma.tweet.findMany({
+    include: {
+      author: true,
+      mediaFiles: true,
+      replies: {
+        include: {
+          author: true
+        }
+      },
+      replyTo: {
+        include: {
+          author: true
+        }
+      }
+    },
+    orderBy: [
+      {
+        createdAt: 'desc'
+      }
+    ]
+  })
+}

@@ -63,6 +63,7 @@ Nuxt3 搭配了 Nitro 讓開發者可以輕鬆在專案內建立 Server API
 - jwt-decode
 - formidable
 - cloudinary
+- human-time
 
 ### 工具介紹 - prisma
 Prisma是一套資料庫工具，提供好上手的資料庫串接功能，本專案串接的資料庫為 mongoDB
@@ -226,4 +227,13 @@ export const uploadToCloudinary = (image) => {   # 上傳圖片
     })   
   })
 }
+```
+
+### 工具介紹 - humen-time
+顯示時間
+```bash
+npm install human-time                 # 安裝 human-time 套件
+
+import human from 'human-time'         # 在檔案內引入
+human(tweet.createdAt)                 # 顯示「 N (days/minutes/...) ago」
 ```
